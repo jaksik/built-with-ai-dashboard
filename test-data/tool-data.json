@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Make",
+        "link": "https://www.make.com/en",
+        "affiliate": "https://www.make.com/en/register?pc=sharpstartup",
+        "dashboard": "https://us1.make.com/user/affiliate",
+        "tagline": "",
+        "description": "Visual platform for connecting apps and automating workflows.",
+        "category": "Automation"
+    },
+    {
+        "name": "Zapier",
+        "link": "https://www.make.com/en",
+        "affiliate": "https://www.make.com/en/register?pc=sharpstartup",
+        "dashboard": "https://us1.make.com/user/affiliate",
+        "tagline": "",
+        "description": "Visual platform for connecting apps and automating workflows.",
+        "category": "Coding"
+    }
+]
