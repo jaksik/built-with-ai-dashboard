@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
@@ -11,60 +11,116 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
   const { data: session } = useSession();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const isActivePath = (path: string) => router.pathname === path;
 
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+      <aside
+        className={`fixed h-full bg-white shadow-lg transition-transform duration-300 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } w-64`}
+      >
+        <div className="p-6 flex items-center justify-between">
+          {/* <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1> */}
+          <button
+            onClick={() => setIsSidebarOpen(false)}
+            className="text-gray-500 hover:text-gray-700 focus:outline-none"
+            aria-label="Close sidebar"
+          >
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
         <nav className="mt-2">
           <ul className="space-y-2">
             <li>
-              <Link href="/tools/create"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
-                  isActivePath("/tools/create") ? "bg-blue-50 text-blue-600" : ""
-                }`}>
-                <Image src="/file.svg" alt="" width={20} height={20} className="mr-3" />
+              <Link
+                href="/tools/create"
+                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/tools/create") ? "bg-blue-50 text-blue-600" : ""
+                  }`}
+              >
+                <Image
+                  src="/file.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="mr-3"
+                />
                 <span>Create Tool</span>
               </Link>
             </li>
             <li>
-              <Link href="/tools/manage"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
-                  isActivePath("/tools/manage") ? "bg-blue-50 text-blue-600" : ""
-                }`}>
-                <Image src="/globe.svg" alt="" width={20} height={20} className="mr-3" />
+              <Link
+                href="/tools/manage"
+                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/tools/manage") ? "bg-blue-50 text-blue-600" : ""
+                  }`}
+              >
+                <Image
+                  src="/globe.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="mr-3"
+                />
                 <span>Manage Tools</span>
               </Link>
             </li>
             <li>
-              <Link href="/news/create"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
-                  isActivePath("/news/create") ? "bg-blue-50 text-blue-600" : ""
-                }`}>
-                <Image src="/file.svg" alt="" width={20} height={20} className="mr-3" />
+              <Link
+                href="/news/create"
+                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/news/create") ? "bg-blue-50 text-blue-600" : ""
+                  }`}
+              >
+                <Image
+                  src="/file.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="mr-3"
+                />
                 <span>Create News</span>
               </Link>
             </li>
             <li>
-              <Link href="/news/manage"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
-                  isActivePath("/news/manage") ? "bg-blue-50 text-blue-600" : ""
-                }`}>
-                <Image src="/globe.svg" alt="" width={20} height={20} className="mr-3" />
+              <Link
+                href="/news/manage"
+                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/news/manage") ? "bg-blue-50 text-blue-600" : ""
+                  }`}
+              >
+                <Image
+                  src="/globe.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="mr-3"
+                />
                 <span>Manage news</span>
               </Link>
             </li>
-                        <li>
-              <Link href="/news/discover"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
-                  isActivePath("/news/discover") ? "bg-blue-50 text-blue-600" : ""
-                }`}>
-                <Image src="/globe.svg" alt="" width={20} height={20} className="mr-3" />
+            <li>
+              <Link
+                href="/news/discover"
+                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/news/discover") ? "bg-blue-50 text-blue-600" : ""
+                  }`}
+              >
+                <Image
+                  src="/globe.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className="mr-3"
+                />
                 <span>Discover news</span>
               </Link>
             </li>
@@ -76,7 +132,39 @@ export default function Layout({ children }: LayoutProps) {
       <div className="flex-1 flex flex-col">
         {/* Navbar */}
         <header className="bg-white shadow-sm">
-          <div className="flex items-center justify-end px-8 py-4">
+          <div className="flex items-center justify-between px-8 py-4">
+            <div className="flex items-center space-x-4"> {/* Added flex and space-x-4 */}
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="text-gray-600 hover:text-gray-800 focus:outline-none"
+                aria-label="Toggle sidebar"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+
+              <h1 className="text-xl pl-5 font-semibold tracking-tight text-gray-900">
+                <Link href="/" className="flex items-center space-x-2 hover:opacity-90">
+                  <Image
+                    src="/globe.svg"
+                    alt="Logo"
+                    width={32}
+                    height={32}
+                  />
+                  <span>Built With AI</span>
+                </Link>
+              </h1>
+            </div>
+
             <div className="flex items-center space-x-4">
               <span className="text-gray-700">{session?.user?.name}</span>
               <div className="relative group">
@@ -92,7 +180,7 @@ export default function Layout({ children }: LayoutProps) {
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
                       <span className="text-gray-600 text-lg">
-                        {session?.user?.name?.[0] || '?'}
+                        {session?.user?.name?.[0] || "?"}
                       </span>
                     </div>
                   )}
@@ -112,9 +200,7 @@ export default function Layout({ children }: LayoutProps) {
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="p-8">
-            {children}
-          </div>
+          <div className="p-8">{children}</div>
         </main>
       </div>
     </div>
