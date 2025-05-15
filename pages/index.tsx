@@ -14,10 +14,10 @@ export default function Home() {
         <div className="text-center p-8 bg-white rounded-lg shadow-md">
           <h1 className="text-3xl font-bold mb-6">Welcome to Dashboard</h1>
           <button 
-            onClick={() => signIn()}
+            onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
             className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
           >
-            Sign In
+            Sign In with Google
           </button>
         </div>
       </div>
@@ -36,5 +36,15 @@ export default function Home() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
+  
+  if (session) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    };
+  }
+
   return { props: { session } };
 };
