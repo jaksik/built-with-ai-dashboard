@@ -74,13 +74,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     case 'DELETE':
       try {
-        const { ArticleId } = req.query;
+        const { articleId } = req.query;
         
-        if (!ArticleId) {
+        if (!articleId) {
           return res.status(400).json({ error: 'Article ID is required' });
         }
 
-        const deletedArticle = await Article.findByIdAndDelete(ArticleId);
+        const deletedArticle = await Article.findByIdAndDelete(articleId);
 
         if (!deletedArticle) {
           return res.status(404).json({ error: 'Article not found' });
