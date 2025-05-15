@@ -4,6 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { IArticle } from '../../models/Article';
 import LoadingSpinner from '../LoadingSpinner';
 
+const truncateText = (text: string, maxLength: number = 75) => {
+  return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+};
+
 const ArticleDiscover: React.FC = () => {
   const [article, setArticles] = useState<IArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,27 +34,24 @@ const ArticleDiscover: React.FC = () => {
   }, []);
 
   const handleDeleteArticle = async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this article article?')) {
-      return;
-    }
+    
 
     try {
-      const response = await fetch(`/api/article?articleId=${id}`, {
+      const response = await fetch(`/api/articles?articleId=${id}`, {
         method: 'DELETE',
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to delete article article');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete article');
       }
 
       setArticles(article.filter(article => article._id.toString() !== id));
     } catch (err) {
       console.error('Delete error:', err);
-      alert('Failed to delete article article');
+      alert(err instanceof Error ? err.message : 'Failed to delete article');
     }
   };
-
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -66,61 +67,67 @@ const ArticleDiscover: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Title
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Source
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Published At
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Category
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Delete
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {article.map((article) => (
-                <tr key={article._id.toString()} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-normal">
-                    <div className="flex flex-col">
-                      <a
-                        href={article.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm font-medium text-gray-900 hover:text-blue-600"
-                      >
-                        {article.title}
-                      </a>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-900">{article.source}</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-900">{article.publishedAt instanceof Date ? article.publishedAt.toLocaleString() : article.publishedAt}</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button
-                      onClick={() => handleDeleteArticle(article._id.toString())}
-                      className="text-red-600 hover:text-red-900 hover:underline"
-                    >
-                      Delete
-                    </button>
-                  </td>
+      <div className="bg-white rounded-lg shadow">
+        <div className="overflow-x-auto sm:mx-0 -mx-6">
+          <div className="inline-block min-w-full align-middle">
+            <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th scope="col" className="w-7/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Title
+                  </th>
+                  <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Source
+                  </th>
+                  <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Published At
+                  </th>
+                  <th scope="col" className="w-1/12 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {article.map((article) => (
+                  <tr key={article._id.toString()} className="hover:bg-gray-50">
+                    <td className="w-1/2 px-6 py-4">
+                      <div className="flex flex-col">
+                        <a
+                          href={article.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-gray-900 hover:text-blue-600 line-clamp-2"
+                          title={article.title}
+                        >
+                          {truncateText(article.title)}
+                        </a>
+                      </div>
+                    </td>
+                    <td className="w-1/6 px-6 py-4">
+                      <span className="text-sm text-gray-900">{article.source}</span>
+                    </td>
+                    <td className="w-1/6 px-6 py-4">
+                      <span className="text-sm text-gray-900">
+                        {new Date(article.publishedAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </span>
+                    </td>
+                    <td className="w-1/12 px-6 py-4 text-right">
+                      <button
+                        onClick={() => handleDeleteArticle(article._id.toString())}
+                        className="text-sm text-red-600 hover:text-red-900 font-medium"
+                        title="Delete article"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
