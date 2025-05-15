@@ -59,6 +59,15 @@ export default function Layout({ children }: LayoutProps) {
                 <span>Manage news</span>
               </Link>
             </li>
+                        <li>
+              <Link href="/news/discover"
+                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${
+                  isActivePath("/news/discover") ? "bg-blue-50 text-blue-600" : ""
+                }`}>
+                <Image src="/globe.svg" alt="" width={20} height={20} className="mr-3" />
+                <span>Discover news</span>
+              </Link>
+            </li>
           </ul>
         </nav>
       </aside>
