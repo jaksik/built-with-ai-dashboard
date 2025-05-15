@@ -1,13 +1,13 @@
 import { GetServerSideProps } from "next";
 import { requireAuth } from "../../lib/requireAuth";
 import Layout from "../../components/Layout";
-import SimpleForm from "../../components/Form";
+import ToolCreateForm from "../../components/ToolCreateForm";
 
 export default function CreateToolsPage() {
   return (
     <Layout>
       <h1>Create News</h1>
-      <SimpleForm />
+      <ToolCreateForm />
     </Layout>
   );
 }
