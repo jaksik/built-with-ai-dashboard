@@ -66,7 +66,6 @@ useEffect(() => {
         throw new Error(error.message || 'Failed to update news article');
       }
 
-      const { data } = await response.json();
       setNews(news.map(article => 
         article._id.toString() === id 
           ? { ...article, active: !currentActive }

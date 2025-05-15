@@ -1,6 +1,6 @@
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
-import { ReactElement, ReactNode } from "react";
+import { ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import Layout from "../components/Layout";
 import "@/styles/globals.css";
