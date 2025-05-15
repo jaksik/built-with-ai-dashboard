@@ -12,6 +12,12 @@ export function requireAuth(gssp: GetServerSideProps) {
         redirect: { destination: "/", permanent: false },
       };
     }
+    // Add this to redirect authenticated users away from home
+    if (ctx.resolvedUrl === '/') {
+      return {
+        redirect: { destination: "/dashboard", permanent: false },
+      };
+    }
     return gssp(ctx);
   };
 }
