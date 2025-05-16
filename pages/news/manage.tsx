@@ -6,7 +6,6 @@ import NewsManager from '@/components/NewsManager';
 export default function ManageNewsPage() {
   return (
     <Layout>
-      <h1 className="text-2xl font-bold mb-6">Manage News</h1>
       <NewsManager />
     </Layout>
   );

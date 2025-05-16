@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { IArticle } from '../../models/Article';
 import LoadingSpinner from '../LoadingSpinner';
 
-const truncateText = (text: string, maxLength: number = 75) => {
+const truncateText = (text: string, maxLength: number = 74) => {
   return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
 };
 
@@ -67,6 +67,9 @@ const ArticleDiscover: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6">
+
+      <h1 className="text-2xl font-bold mb-6">Discover News Articles</h1>
+
       <div className="bg-white rounded-lg shadow">
         <div className="overflow-x-auto sm:mx-0 -mx-6">
           <div className="inline-block min-w-full align-middle">

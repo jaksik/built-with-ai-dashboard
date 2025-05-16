@@ -6,7 +6,6 @@ import { ToolsManager } from '../../components/ToolsManager';
 export default function ManageToolsPage() {
   return (
     <Layout>
-      <h1>Create News</h1>
       <ToolsManager />
     </Layout>
   );

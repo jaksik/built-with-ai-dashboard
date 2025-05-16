@@ -51,7 +51,7 @@ export default function Layout({ children }: LayoutProps) {
                   }`}
               >
                 <Image
-                  src="/file.svg"
+                  src="/create.svg"
                   alt=""
                   width={20}
                   height={20}
@@ -67,7 +67,7 @@ export default function Layout({ children }: LayoutProps) {
                   }`}
               >
                 <Image
-                  src="/globe.svg"
+                  src="/manage.svg"
                   alt=""
                   width={20}
                   height={20}
@@ -83,7 +83,7 @@ export default function Layout({ children }: LayoutProps) {
                   }`}
               >
                 <Image
-                  src="/file.svg"
+                  src="/create.svg"
                   alt=""
                   width={20}
                   height={20}
@@ -99,7 +99,7 @@ export default function Layout({ children }: LayoutProps) {
                   }`}
               >
                 <Image
-                  src="/globe.svg"
+                  src="/manage.svg"
                   alt=""
                   width={20}
                   height={20}
@@ -115,7 +115,7 @@ export default function Layout({ children }: LayoutProps) {
                   }`}
               >
                 <Image
-                  src="/globe.svg"
+                  src="/discover.svg"
                   alt=""
                   width={20}
                   height={20}
