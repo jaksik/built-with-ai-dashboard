@@ -21,8 +21,8 @@ export const ToolsManager: FC = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Tools Collection</h2>
-      <div className={styles.grid}>
+      <h1 className="text-2xl font-bold mb-6">Manage Tools</h1>
+        <div className={styles.grid}>
         {tools.map((tool) => (
           <div key={tool._id as string} className={styles.card}>
             <h3>{tool.name}</h3>

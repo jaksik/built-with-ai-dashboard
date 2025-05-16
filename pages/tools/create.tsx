@@ -6,7 +6,6 @@ import ToolCreateForm from "../../components/ToolCreateForm";
 export default function CreateToolsPage() {
   return (
     <Layout>
-      <h1>Create News</h1>
       <ToolCreateForm />
     </Layout>
   );

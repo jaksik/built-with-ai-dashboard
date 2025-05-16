@@ -6,7 +6,6 @@ import NewsCreateForm from "../../components/NewsCreateForm";
 export default function CreateNewsPage() {
   return (
     <Layout>
-      <h1>Create News</h1>
       <NewsCreateForm />
     </Layout>
   );

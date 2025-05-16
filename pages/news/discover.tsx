@@ -3,10 +3,9 @@ import { requireAuth } from "../../lib/requireAuth";
 import Layout from "../../components/Layout";
 import ArticleDiscover from '@/components/ArticleDiscover';
 
-export default function ManageNewsPage() {
+export default function DiscoverNewsPage() {
   return (
     <Layout>
-      <h1 className="text-2xl font-bold mb-6">Discover News</h1>
       <ArticleDiscover />
     </Layout>
   );
