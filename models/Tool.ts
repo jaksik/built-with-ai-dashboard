@@ -10,9 +10,9 @@ export interface ITool {
   description: string;
   category: string;
   tags: string[];
-  createdAt: Date;
   active: boolean;
   clicks: number;
+  createdAt: Date;
 }
 
 const ToolSchema = new mongoose.Schema({
@@ -36,11 +36,11 @@ const ToolSchema = new mongoose.Schema({
   },
     tagline: {
     type: String,
-    trim: true
+    required: [true, 'Description is required']
   },
   description: {
     type: String,
-    required: [true, 'Description is required']
+    trim: true
   },
   category: {
     type: String,
@@ -51,17 +51,17 @@ const ToolSchema = new mongoose.Schema({
     type: String,
     trim: true
   }],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  active: {
+    active: {
     type: Boolean,
     default: true
   },
   clicks: {
     type: Number,
     default: 0
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
 }, {
   timestamps: true // This will automatically handle createdAt and updatedAt

@@ -46,8 +46,8 @@ export default function Layout({ children }: LayoutProps) {
           <ul className="space-y-2">
             <li>
               <Link
-                href="/tools/create"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/tools/create") ? "bg-blue-50 text-blue-600" : ""
+                href="/articles/create"
+                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/articles/create") ? "bg-blue-50 text-blue-600" : ""
                   }`}
               >
                 <Image
@@ -57,13 +57,13 @@ export default function Layout({ children }: LayoutProps) {
                   height={20}
                   className="mr-3"
                 />
-                <span>Create Tool</span>
+                <span>Create Article</span>
               </Link>
             </li>
             <li>
               <Link
-                href="/tools/manage"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/tools/manage") ? "bg-blue-50 text-blue-600" : ""
+                href="/articles/manage"
+                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/articles/manage") ? "bg-blue-50 text-blue-600" : ""
                   }`}
               >
                 <Image
@@ -73,45 +73,13 @@ export default function Layout({ children }: LayoutProps) {
                   height={20}
                   className="mr-3"
                 />
-                <span>Manage Tools</span>
+                <span>Manage Articles</span>
               </Link>
             </li>
             <li>
               <Link
-                href="/news/create"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/news/create") ? "bg-blue-50 text-blue-600" : ""
-                  }`}
-              >
-                <Image
-                  src="/create.svg"
-                  alt=""
-                  width={20}
-                  height={20}
-                  className="mr-3"
-                />
-                <span>Create News</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/news/manage"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/news/manage") ? "bg-blue-50 text-blue-600" : ""
-                  }`}
-              >
-                <Image
-                  src="/manage.svg"
-                  alt=""
-                  width={20}
-                  height={20}
-                  className="mr-3"
-                />
-                <span>Manage news</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/news/discover"
-                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/news/discover") ? "bg-blue-50 text-blue-600" : ""
+                href="/articles/discover"
+                className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/articles/discover") ? "bg-blue-50 text-blue-600" : ""
                   }`}
               >
                 <Image
@@ -121,9 +89,10 @@ export default function Layout({ children }: LayoutProps) {
                   height={20}
                   className="mr-3"
                 />
-                <span>Discover news</span>
+                <span>Discover Articles</span>
               </Link>
             </li>
+                     
           </ul>
         </nav>
       </aside>
