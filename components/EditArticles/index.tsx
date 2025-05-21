@@ -7,7 +7,7 @@ const truncateText = (text: string, maxLength: number = 74) => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
 };
 
-const ArticleTable: React.FC = () => {
+const EditArticles: React.FC = () => {
     const [article, setarticle] = useState<IArticle[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
@@ -185,4 +185,4 @@ const ArticleTable: React.FC = () => {
     );
 };
 
-export default ArticleTable;
+export default EditArticles;

@@ -62,7 +62,7 @@ export default function Layout({ children }: LayoutProps) {
             </li>
             <li>
               <Link
-                href="/articles/manage"
+                href="/articles/edit"
                 className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/articles/manage") ? "bg-blue-50 text-blue-600" : ""
                   }`}
               >
@@ -73,12 +73,12 @@ export default function Layout({ children }: LayoutProps) {
                   height={20}
                   className="mr-3"
                 />
-                <span>Manage Articles</span>
+                <span>Edit Articles</span>
               </Link>
             </li>
             <li>
               <Link
-                href="/articles/discover"
+                href="/articles/import"
                 className={`flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors ${isActivePath("/articles/discover") ? "bg-blue-50 text-blue-600" : ""
                   }`}
               >
@@ -89,7 +89,7 @@ export default function Layout({ children }: LayoutProps) {
                   height={20}
                   className="mr-3"
                 />
-                <span>Discover Articles</span>
+                <span>Import Articles</span>
               </Link>
             </li>
                      
