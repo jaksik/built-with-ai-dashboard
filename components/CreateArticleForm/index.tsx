@@ -4,20 +4,16 @@ interface FormData {
     title: string;
     link: string;
     source: string;
-    description: string;
     category: string;
-    tags: string[];
     publishedAt: string;  // Use string for form input, convert to Date when submitting
 }
 
-const NewsCreateForm: React.FC = () => {
+const CreateArticleForm: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         title: '',
         link: '',
         source: '',
-        description: '',
         category: '',
-        tags: [],
         publishedAt: new Date().toISOString().split('T')[0]
     });
     const [loading, setLoading] = useState(false);
@@ -26,18 +22,10 @@ const NewsCreateForm: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        if (name === 'tags') {
-            // Split tags by commas and trim whitespace
-            setFormData(prev => ({
-                ...prev,
-                tags: value.split(',').map(tag => tag.trim()).filter(Boolean)
-            }));
-        } else {
-            setFormData(prev => ({
-                ...prev,
-                [name]: value
-            }));
-        }
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -46,8 +34,13 @@ const NewsCreateForm: React.FC = () => {
         setError('');
         setSuccess(false);
 
+        console.log('Submitting form data:', {
+            ...formData,
+            publishedAt: new Date(formData.publishedAt)
+        });
+
         try {
-            const response = await fetch('/api/news', {
+            const response = await fetch('/api/articles', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,8 +48,6 @@ const NewsCreateForm: React.FC = () => {
                 body: JSON.stringify({
                     ...formData,
                     publishedAt: new Date(formData.publishedAt),
-                    active: true,
-                    clicks: 0
                 }),
             });
 
@@ -70,10 +61,8 @@ const NewsCreateForm: React.FC = () => {
                 title: '',
                 link: '',
                 source: '',
-                description: '',
                 category: '',
-                tags: [],
-                publishedAt: new Date().toISOString().split('T')[0]
+                publishedAt: new Date().toISOString().split('T')[0],
             });
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to create news article');
@@ -84,7 +73,6 @@ const NewsCreateForm: React.FC = () => {
 
     return (
         <div className="max-w-2xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-6">Submit News Article to DB</h1>
             {error && (
                 <div className="mb-4 p-4 text-red-700 bg-red-100 rounded-md">
                     {error}
@@ -96,6 +84,8 @@ const NewsCreateForm: React.FC = () => {
                 </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-6 bg-white rounded-lg shadow p-6">
+                <h1 className="text-2xl font-bold mb-6">Article Create Form</h1>
+
                 <div>
                     <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                         Title
@@ -142,20 +132,6 @@ const NewsCreateForm: React.FC = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                        Description
-                    </label>
-                    <textarea
-                        name="description"
-                        id="description"
-                        rows={3}
-                        value={formData.description}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                </div>
-
-                <div>
                     <label htmlFor="category" className="block text-sm font-medium text-gray-700">
                         Category
                     </label>
@@ -168,28 +144,14 @@ const NewsCreateForm: React.FC = () => {
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                         <option value="" disabled>Select category</option>
-                        <option value="Macro Shifts">Macro Shifts</option>
+                        <option value="Industry Shifts">Industry Shifts</option>
+                        <option value="Product">Product</option>
                         <option value="AI Agents">AI Agents</option>
                         <option value="Startups">Startups</option>
                         <option value="Research">Research</option>
                         <option value="Other">Other</option>
 
                     </select>
-                </div>
-
-                <div>
-                    <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
-                        Tags (comma-separated)
-                    </label>
-                    <input
-                        type="text"
-                        name="tags"
-                        id="tags"
-                        value={formData.tags.join(', ')}
-                        onChange={handleChange}
-                        placeholder="tag1, tag2, tag3"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
                 </div>
 
                 <div>
@@ -222,4 +184,4 @@ const NewsCreateForm: React.FC = () => {
     );
 };
 
-export default NewsCreateForm;
+export default CreateArticleForm;

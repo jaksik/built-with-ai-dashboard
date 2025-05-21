@@ -4,14 +4,10 @@ export interface IArticle {
   _id: mongoose.Types.ObjectId;
   title: string;
   link: string;
-  image?: string;
   source: string;
   publishedAt: Date;
-  time: string;
-  articleType: string;
-  searchTerm: string;
+  category: string;
   createdAt: Date;
-  used: boolean;
 }
 
 const ArticleSchema = new mongoose.Schema({
@@ -25,10 +21,6 @@ const ArticleSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  image: {
-    type: String,
-    default: null
-  },
   source: {
     type: String,
     required: true
@@ -37,25 +29,13 @@ const ArticleSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  time: {
-    type: String,
-    required: true
-  },
-  articleType: {
-    type: String,
-    required: true
-  },
-  searchTerm: {
+  category: {
     type: String,
     required: true
   },
   createdAt: {
     type: Date,
     default: Date.now
-  },
-  used: {
-    type: Boolean,
-    default: false
   }
 });
 

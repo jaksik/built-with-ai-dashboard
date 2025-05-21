@@ -1,12 +1,12 @@
 import { GetServerSideProps } from "next";
 import { requireAuth } from "../../lib/requireAuth";
 import Layout from "../../components/Layout";
-import NewsCreateForm from "../../components/NewsCreateForm";
+import ArticleTable from "@/components/ArticleManager/ArticleTable";
 
-export default function CreateNewsPage() {
+export default function ManageNewsPage() {
   return (
     <Layout>
-      <NewsCreateForm />
+      <ArticleTable/>
     </Layout>
   );
 }

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-// Update the path below to the correct relative path where your Article model is located.
-// For example, if it's in 'models/Article.ts' at the project root, use:
 import { IArticle } from '../../models/Article';
 import LoadingSpinner from '../LoadingSpinner';
+import NewsImportModal from './NewsImportModal';
 
 const truncateText = (text: string, maxLength: number = 74) => {
   return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
@@ -12,6 +11,8 @@ const ArticleDiscover: React.FC = () => {
   const [article, setArticles] = useState<IArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<IArticle | null>(null);
 
   useEffect(() => {
     const fetcharticle = async () => {
@@ -34,7 +35,6 @@ const ArticleDiscover: React.FC = () => {
   }, []);
 
   const handleDeleteArticle = async (id: string) => {
-    
 
     try {
       const response = await fetch(`/api/articles?articleId=${id}`, {
@@ -67,33 +67,45 @@ const ArticleDiscover: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6">
-
       <h1 className="text-2xl font-bold mb-6">Discover News Articles</h1>
-
       <div className="bg-white rounded-lg shadow">
         <div className="overflow-x-auto sm:mx-0 -mx-6">
           <div className="inline-block min-w-full align-middle">
             <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="w-7/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Published At
+                  </th>
+                  <th scope="col" className="w-6/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Title
                   </th>
                   <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Source
                   </th>
-                  <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Published At
+
+                  <th scope="col" className="w-1/12 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Import
                   </th>
                   <th scope="col" className="w-1/12 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    Delete
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {article.map((article) => (
                   <tr key={article._id.toString()} className="hover:bg-gray-50">
-                    <td className="w-1/2 px-6 py-4">
+
+                    <td className="w-2/12 px-6 py-4">
+                      <span className="text-sm text-gray-900">
+                        {new Date(article.publishedAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </span>
+                    </td>
+
+                    <td className="w-6/12 px-6 py-4">
                       <div className="flex flex-col">
                         <a
                           href={article.link}
@@ -106,17 +118,23 @@ const ArticleDiscover: React.FC = () => {
                         </a>
                       </div>
                     </td>
-                    <td className="w-1/6 px-6 py-4">
+
+                    <td className="w-2/12 px-6 py-4">
                       <span className="text-sm text-gray-900">{article.source}</span>
                     </td>
-                    <td className="w-1/6 px-6 py-4">
-                      <span className="text-sm text-gray-900">
-                        {new Date(article.publishedAt).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric'
-                        })}
-                      </span>
+
+                    <td className="w-1/12 px-6 py-4">
+                      <button
+                        onClick={() => {
+                          setSelectedArticle(article);
+                          setIsModalOpen(true);
+                        }}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                      >
+                        Imp
+                      </button>
                     </td>
+
                     <td className="w-1/12 px-6 py-4 text-right">
                       <button
                         onClick={() => handleDeleteArticle(article._id.toString())}
@@ -126,6 +144,7 @@ const ArticleDiscover: React.FC = () => {
                         Delete
                       </button>
                     </td>
+
                   </tr>
                 ))}
               </tbody>
@@ -133,6 +152,16 @@ const ArticleDiscover: React.FC = () => {
           </div>
         </div>
       </div>
+      <NewsImportModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedArticle(null); // Clear selection when closing
+        }}
+        article={selectedArticle}
+
+      >
+      </NewsImportModal>
     </div>
   );
 };
