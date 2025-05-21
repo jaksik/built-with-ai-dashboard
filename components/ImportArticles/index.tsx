@@ -3,7 +3,7 @@ import { IScrape } from '@/models/Scrape';
 import LoadingSpinner from '../LoadingSpinner';
 import ImportArticleModal from './ImportArticleModal';
 
-const truncateText = (text: string, maxLength: number = 74) => {
+const truncateText = (text: string, maxLength: number = 120) => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
 };
 
@@ -38,11 +38,9 @@ const GetScrapes: React.FC = () => {
     // === Handle scrape Delete ===
     //=====================================
     const handleDeleteScrape = async (id: string) => {
-        if (!window.confirm('Are you sure you want to delete this scrape?')) {
-            return;
-        }
+  
         try {
-            const response = await fetch(`/api/scrape?scrapeId=${id}`, {
+            const response = await fetch(`/api/scrapes?scrapeId=${id}`, {
                 method: 'DELETE',
             });
             if (!response.ok) {
@@ -88,102 +86,100 @@ const GetScrapes: React.FC = () => {
 
     // Handle successful import by removing the scrape from the list
     const handleImportSuccess = (importedScrape: IScrape) => {
-        setScrape(prevScrapes => 
+        setScrape(prevScrapes =>
             prevScrapes.filter(scrape => scrape._id.toString() !== importedScrape._id.toString())
         );
     };
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto p-6 max-w-[1200px]">
             <h1 className="text-2xl font-bold mb-6">Discover News scrapes</h1>
-            <div className="bg-white rounded-lg shadow">
-                <div className="overflow-x-auto sm:mx-0 -mx-6">
-                    <div className="inline-block min-w-full align-middle">
-                        <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Published At
-                                    </th>
-                                    <th scope="col" className="w-6/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Title
-                                    </th>
-                                    <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Source
-                                    </th>
+            <div className="inline-block min-w-full align-middle">
+                <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
+                    <thead className="bg-gray-50">
+                        <tr>
+                            <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Published At
+                            </th>
+                            <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Source
+                            </th>
+                            <th scope="col" className="w-6/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Title
+                            </th>
+                            <th scope="col" className="w-1/12 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Delete
+                            </th>
 
-                                    <th scope="col" className="w-1/12 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Edit
-                                    </th>
-                                    <th scope="col" className="w-1/12 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" className="w-1/12 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Edit
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                        {scrape.map((currentscrape) => (
+                            <tr key={currentscrape._id.toString()} className="hover:bg-gray-50">
+
+                                <td className="w-2/12 px-2 py-2">
+                                    <span className="text-xs text-gray-900">
+                                        {formatDate(currentscrape.publishedAt)}
+
+                                    </span>
+                                </td>
+
+                                <td className="w-2/12 px-2 py-2">
+                                    <span className="text-xs text-gray-900">{currentscrape.source}</span>
+                                </td>
+                                <td className="w-6/12 px-2 py-2">
+                                    <div className="flex flex-col">
+                                        <a
+                                            href={currentscrape.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-sm font-medium text-gray-900 hover:text-blue-600 line-clamp-2"
+                                            title={currentscrape.title}
+                                        >
+                                            {truncateText(currentscrape.title)}
+                                        </a>
+                                    </div>
+                                </td>
+
+                                <td className="w-1/12 px-2 py-2">
+                                    <button
+                                        onClick={() => handleDeleteScrape(currentscrape._id.toString())}
+                                        className="text-sm text-red-600 hover:text-red-900 font-medium"
+                                        title="Delete scrape"
+                                    >
                                         Delete
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {scrape.map((currentscrape) => (
-                                    <tr key={currentscrape._id.toString()} className="hover:bg-gray-50">
+                                    </button>
+                                </td>
 
-                                        <td className="w-2/12 px-6 py-4">
-                                            <span className="text-sm text-gray-900">
-                                                {formatDate(currentscrape.publishedAt)}
+                                <td className="w-1/12 px-2 py-2">
+                                    <ImportArticleModal
+                                        initialData={{
+                                            _id: currentscrape._id.toString(),
+                                            title: currentscrape.title,
+                                            link: currentscrape.link,
+                                            source: currentscrape.source,
+                                            category: currentscrape.category || '',
+                                            publishedAt: typeof currentscrape.publishedAt === 'string'
+                                                ? currentscrape.publishedAt
+                                                : currentscrape.publishedAt.toISOString(),
+                                        }}
+                                        onSuccess={handleImportSuccess}
+                                    />
+                                </td>
 
-                                            </span>
-                                        </td>
 
-                                        <td className="w-6/12 px-6 py-4">
-                                            <div className="flex flex-col">
-                                                <a
-                                                    href={currentscrape.link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-sm font-medium text-gray-900 hover:text-blue-600 line-clamp-2"
-                                                    title={currentscrape.title}
-                                                >
-                                                    {truncateText(currentscrape.title)}
-                                                </a>
-                                            </div>
-                                        </td>
 
-                                        <td className="w-2/12 px-6 py-4">
-                                            <span className="text-sm text-gray-900">{currentscrape.source}</span>
-                                        </td>
-
-                                        <td className="w-1/12 px-6 py-4">
-                                            <ImportArticleModal
-                                                initialData={{
-                                                    _id: currentscrape._id.toString(),
-                                                    title: currentscrape.title,
-                                                    link: currentscrape.link,
-                                                    source: currentscrape.source,
-                                                    category: currentscrape.category || '',
-                                                    publishedAt: typeof currentscrape.publishedAt === 'string'
-                                                        ? currentscrape.publishedAt
-                                                        : currentscrape.publishedAt.toISOString(),
-                                                }}
-                                                onSuccess={handleImportSuccess}
-                                            />
-                                        </td>
-
-                                        <td className="w-1/12 px-6 py-4 text-right">
-                                            <button
-                                                onClick={() => handleDeleteScrape(currentscrape._id.toString())}
-                                                className="text-sm text-red-600 hover:text-red-900 font-medium"
-                                                title="Delete scrape"
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-
         </div>
+
     );
 };
 
