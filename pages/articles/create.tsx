@@ -1,8 +1,7 @@
 import { GetServerSideProps } from "next";
 import { requireAuth } from "../../lib/requireAuth";
 import Layout from "../../components/Layout";
-import CreateArticleForm from "../../components/CreateArticleForm";
-
+import CreateArticleForm from "@/components/CreateArticles";
 export default function CreateNewsPage() {
   return (
     <Layout>

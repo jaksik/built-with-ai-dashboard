@@ -1,12 +1,12 @@
 import { GetServerSideProps } from "next";
 import { requireAuth } from "../../lib/requireAuth";
 import Layout from "../../components/Layout";
-import ArticleTable from "@/components/ArticleManager/ArticleTable";
+import ImportArticles from '@/components/ImportArticles';
 
-export default function ManageNewsPage() {
+export default function DiscoverNewsPage() {
   return (
     <Layout>
-      <ArticleTable/>
+      <ImportArticles />
     </Layout>
   );
 }
