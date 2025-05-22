@@ -48,9 +48,9 @@ export function EditArticleModal({ initialData, onSuccess }: EditArticleModalPro
     <div>
       <button
         onClick={() => setIsOpen(true)}
-        className="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+        className="px-4 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
       >
-        Edit Article
+        Edit
       </button>
 
       {isOpen && (

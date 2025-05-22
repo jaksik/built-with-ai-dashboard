@@ -101,9 +101,11 @@ const EditArticleForm: React.FC<EditArticleFormProps> = ({ initialData, onSucces
 
             // Call onSuccess callback with the updated article data
             if (onSuccess) {
+                console.log('Updated article:', updatedArticle);
                 onSuccess(updatedArticle);
             }
         } catch (err) {
+            console.error('Error creating news article:', err);
             setError(err instanceof Error ? err.message : 'Failed to create news article');
         } finally {
             setLoading(false);
@@ -183,9 +185,10 @@ const EditArticleForm: React.FC<EditArticleFormProps> = ({ initialData, onSucces
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                         <option value="" disabled>Select category</option>
-                        <option value="Macro Shifts">Macro Shifts</option>
+                        <option value="Industry Shifts">Industry Shifts</option>
                         <option value="AI Agents">AI Agents</option>
                         <option value="Startups">Startups</option>
+                        <option value="Product">Product</option>
                         <option value="Research">Research</option>
                         <option value="Other">Other</option>
                     </select>
