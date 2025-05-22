@@ -89,24 +89,24 @@ const EditArticles: React.FC = () => {
 
     return (
         <div className="container mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-6">Manage Articles</h1>
-            <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
+            <h1 className="text-2xl font-bold mb-6 text-center">Edit Articles</h1>
+            <table className="w-full table-fixed divide-y divide-gray-200 border-collapse max-w-[1200px] mx-auto">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="w-2/12 px-2 py-2 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">
                             Published At
                         </th>
-                        <th scope="col" className="w-6/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="w-6/12 px-2 py-2 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">
                             Title
                         </th>
-                        <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Source
+                        <th scope="col" className="w-2/12 px-2 py-2 text-left text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                            Category
                         </th>
 
-                        <th scope="col" className="w-1/12 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="w-1/12 px-2 py-2 text-center text-sm font-semibold text-gray-500 uppercase tracking-wider">
                             Edit
                         </th>
-                        <th scope="col" className="w-1/12 px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th scope="col" className="w-1/12 px-2 py-2 text-center text-sm font-semibold text-gray-500 uppercase tracking-wider">
                             Delete
                         </th>
                     </tr>
@@ -133,11 +133,15 @@ const EditArticles: React.FC = () => {
                                     >
                                         {truncateText(currentArticle.title)}
                                     </a>
+                                                                    <span className="text-xs text-gray-900">{currentArticle.source}</span>
                                 </div>
                             </td>
 
-                            <td className="w-2/12 px-2 py-1">
+                            {/* <td className="w-2/12 px-2 py-1">
                                 <span className="text-sm text-gray-900">{currentArticle.source}</span>
+                            </td> */}
+                            <td className="w-2/12 px-2 py-1">
+                                <span className="text-sm text-gray-900">{currentArticle.category}</span>
                             </td>
 
                             <td className="w-1/12 px-2 py-1">
