@@ -11,6 +11,7 @@ const GetScrapes: React.FC = () => {
     const [scrape, setScrape] = useState<IScrape[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
+    const [sortField, setSortField] = useState<'date' | 'source'>('date');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); // Default to descending (newest first)
 
 
@@ -75,43 +76,55 @@ const GetScrapes: React.FC = () => {
 
     // === Handle Sorting ===
     //=====================================
-    const handleSortByDate = useCallback(() => {
-        setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
+    const handleSort = useCallback((field: 'date' | 'source') => {
+        if (field === sortField) {
+            // If clicking the same field, toggle the order
+            setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
+        } else {
+            // If clicking a different field, set it as the new sort field and default to ascending
+            setSortField(field);
+            setSortOrder('asc');
+        }
+
         setScrape(prevScrapes => {
             const sortedScrapes = [...prevScrapes].sort((a, b) => {
-                const dateA = new Date(a.publishedAt).getTime();
-                const dateB = new Date(b.publishedAt).getTime();
-                if (sortOrder === 'asc') {
-                    return dateA - dateB;
+                if (field === 'date') {
+                    const dateA = new Date(a.publishedAt).getTime();
+                    const dateB = new Date(b.publishedAt).getTime();
+                    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
                 } else {
-                    return dateB - dateA;
+                    // Sort by source
+                    const sourceA = a.source.toLowerCase();
+                    const sourceB = b.source.toLowerCase();
+                    return sortOrder === 'asc' 
+                        ? sourceA.localeCompare(sourceB)
+                        : sourceB.localeCompare(sourceA);
                 }
             });
             return sortedScrapes;
         });
-    }, [sortOrder]);
+    }, [sortField, sortOrder]);
 
     useEffect(() => {
-        // Re-sort data if it's fetched again or sortOrder changes externally (though not typical here)
-        // This ensures initial sort is applied after data fetch if sortOrder is not its default.
         if (scrape.length > 0) {
             setScrape(prevScrapes => {
                 const sortedScrapes = [...prevScrapes].sort((a, b) => {
-                    const dateA = new Date(a.publishedAt).getTime();
-                    const dateB = new Date(b.publishedAt).getTime();
-                    // Apply sort based on the current sortOrder, not the one being toggled to
-                    // because handleSortByDate already toggles and then sorts.
-                    // This useEffect is more for initial load or if data changes.
-                    if (sortOrder === 'asc') { 
-                        return dateA - dateB;
+                    if (sortField === 'date') {
+                        const dateA = new Date(a.publishedAt).getTime();
+                        const dateB = new Date(b.publishedAt).getTime();
+                        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
                     } else {
-                        return dateB - dateA;
+                        const sourceA = a.source.toLowerCase();
+                        const sourceB = b.source.toLowerCase();
+                        return sortOrder === 'asc' 
+                            ? sourceA.localeCompare(sourceB)
+                            : sourceB.localeCompare(sourceA);
                     }
                 });
                 return sortedScrapes;
             });
         }
-    }, [scrape.length > 0 ? scrape[0]?._id : null, sortOrder]); // Depend on first item's ID as a proxy for data change, and sortOrder
+    }, [scrape.length > 0 ? scrape[0]?._id : null, sortOrder, sortField]); // Depend on first item's ID as a proxy for data change, and sortOrder
 
 
     if (isLoading) {
@@ -140,11 +153,11 @@ const GetScrapes: React.FC = () => {
                 <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" onClick={handleSortByDate}>
-                                Published At {sortOrder === 'asc' ? '▲' : '▼'}
+                            <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" onClick={() => handleSort('date')}>
+                                Published At {sortField === 'date' && (sortOrder === 'asc' ? '▲' : '▼')}
                             </th>
-                            <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Source
+                            <th scope="col" className="w-2/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" onClick={() => handleSort('source')}>
+                                Source {sortField === 'source' && (sortOrder === 'asc' ? '▲' : '▼')}
                             </th>
                             <th scope="col" className="w-6/12 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Title
