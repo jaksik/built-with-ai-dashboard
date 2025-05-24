@@ -71,8 +71,8 @@ const ArticleTable: React.FC<ArticleTableProps> = ({
                            
                              <th scope="col"
                                 className="w-[7.5%] px-3 py-3 text-left text-[12px] font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-colors duration-200"
-                                onClick={() => onSort('category')}>
-                                Category {sortField === 'category' && (
+                                onClick={() => onSort('source')}>
+                                Source {sortField === 'source' && (
                                     <span className="ml-1 text-blue-500">{sortOrder === 'asc' ? '↑' : '↓'}</span>
                                 )}
                             </th>
@@ -132,13 +132,13 @@ const ArticleTable: React.FC<ArticleTableProps> = ({
                                             {truncateTitle(currentscrape.title)}
                                         </a>
                                         <span className="text-[14px] text-gray-500">
-                                            {truncatePublisher(currentscrape.source)}
+                                            {truncatePublisher(currentscrape.publisher)}
                                         </span>
                                     </div>
                                 </td>
                                 <td className="px-2 py-1 text-center">
                                      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[12px] text-center font-medium bg-blue-100 text-blue-800">
-                                        {currentscrape.category}
+                                        {currentscrape.source}
                                     </span>
                                 </td>
                                 <td className="px-3 py-2 text-center">
