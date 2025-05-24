@@ -4,11 +4,12 @@ export interface IScrape {
   _id: mongoose.Types.ObjectId;
   title: string;
   link: string;
-  source: string;
+  publisher: string;
   publishedAt: Date;
+  source: string;
   category: string;
-  createdAt: Date;
   imported?: boolean;
+  createdAt: Date;
 }
 
 const ScrapesSchema = new mongoose.Schema({
@@ -22,12 +23,16 @@ const ScrapesSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  source: {
+  publisher: {
     type: String,
     required: true
   },
   publishedAt: {
     type: Date,
+    required: true
+  },
+  source: {
+    type: String,
     required: true
   },
   category: {
