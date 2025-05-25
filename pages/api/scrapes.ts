@@ -19,13 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   switch (req.method) {
     case 'GET':
       try {
-        const { category, active } = req.query;
+        const { category } = req.query;
         const query: Record<string, unknown> = {
           imported: { $ne: true } // By default, only show non-imported scrapes
         };
 
         if (category) query.category = category;
-        if (active) query.active = active === 'true';
 
         console.log('Fetching Scrape with query:', query);
         const discoverScrape = await Scrape.find(query).sort({ createdAt: -1 });

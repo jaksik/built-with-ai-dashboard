@@ -7,7 +7,7 @@ const GetScrapes: React.FC = () => {
     const [scrape, setScrape] = useState<IScrape[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
-    const [sortField, setSortField] = useState<'date' | 'source'>('date');
+    const [sortField, setSortField] = useState<'date' | 'source' | 'category' | 'createdAt'>('date');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); // Default to descending (newest first)
 
     // === Fetch scrapes ===
@@ -48,59 +48,50 @@ const GetScrapes: React.FC = () => {
         }
     };
 
-    // Helper functions moved to ArticleTable component
-
     // === Handle Sorting ===
     //=====================================
-    const handleSort = useCallback((field: 'date' | 'source') => {
-        if (field === sortField) {
-            // If clicking the same field, toggle the order
-            setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
-        } else {
-            // If clicking a different field, set it as the new sort field and default to ascending
-            setSortField(field);
-            setSortOrder('asc');
-        }
-
-        setScrape(prevScrapes => {
-            const sortedScrapes = [...prevScrapes].sort((a, b) => {
-                if (field === 'date') {
-                    const dateA = new Date(a.publishedAt).getTime();
-                    const dateB = new Date(b.publishedAt).getTime();
-                    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-                } else {
-                    // Sort by source
-                    const sourceA = a.source.toLowerCase();
-                    const sourceB = b.source.toLowerCase();
-                    return sortOrder === 'asc' 
-                        ? sourceA.localeCompare(sourceB)
-                        : sourceB.localeCompare(sourceA);
-                }
-            });
-            return sortedScrapes;
+    const sortData = useCallback((data: IScrape[], field: typeof sortField, order: typeof sortOrder) => {
+        return [...data].sort((a, b) => {
+            if (field === 'date') {
+                const dateA = new Date(a.publishedAt).getTime();
+                const dateB = new Date(b.publishedAt).getTime();
+                return order === 'asc' ? dateA - dateB : dateB - dateA;
+            } else if (field === 'createdAt') {
+                const dateA = new Date(a.createdAt).getTime();
+                const dateB = new Date(b.createdAt).getTime();
+                return order === 'asc' ? dateA - dateB : dateB - dateA;
+            } else if (field === 'category') {
+                const categoryA = (a.category || '').toLowerCase();
+                const categoryB = (b.category || '').toLowerCase();
+                return order === 'asc'
+                    ? categoryA.localeCompare(categoryB)
+                    : categoryB.localeCompare(categoryA);
+            } else {
+                // Sort by source
+                const sourceA = a.source.toLowerCase();
+                const sourceB = b.source.toLowerCase();
+                return order === 'asc' 
+                    ? sourceA.localeCompare(sourceB)
+                    : sourceB.localeCompare(sourceA);
+            }
         });
-    }, [sortField, sortOrder]);
+    }, []);
+
+    const handleSort = useCallback((field: typeof sortField) => {
+        setSortField(field);
+        setSortOrder(prevOrder => {
+            const newOrder = field === sortField ? (prevOrder === 'asc' ? 'desc' : 'asc') : 'asc';
+            setScrape(prevScrapes => sortData(prevScrapes, field, newOrder));
+            return newOrder;
+        });
+    }, [sortField, sortData]);
 
     useEffect(() => {
+        // Only sort if we have scrapes
         if (scrape.length > 0) {
-            setScrape(prevScrapes => {
-                const sortedScrapes = [...prevScrapes].sort((a, b) => {
-                    if (sortField === 'date') {
-                        const dateA = new Date(a.publishedAt).getTime();
-                        const dateB = new Date(b.publishedAt).getTime();
-                        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-                    } else {
-                        const sourceA = a.source.toLowerCase();
-                        const sourceB = b.source.toLowerCase();
-                        return sortOrder === 'asc' 
-                            ? sourceA.localeCompare(sourceB)
-                            : sourceB.localeCompare(sourceA);
-                    }
-                });
-                return sortedScrapes;
-            });
+            setScrape(prevScrapes => sortData(prevScrapes, sortField, sortOrder));
         }
-    }, [scrape.length > 0 ? scrape[0]?._id : null, sortOrder, sortField]); // Depend on first item's ID as a proxy for data change, and sortOrder
+    }, [scrape, sortField, sortOrder, sortData]); // Include all dependencies directly
 
 
     if (isLoading) {
@@ -123,8 +114,8 @@ const GetScrapes: React.FC = () => {
     };
 
     return (
-        <div className="container mx-auto p-6 max-w-[1400px]">
-            <h1 className="text-2xl font-bold mb-6">Discover News scrapes</h1>
+        <div className="container mx-auto max-w-[1400px]">
+            <h1 className="text-2xl font-bold mb-6">Scraped Articles</h1>
             <ArticleTable 
                 scrapes={scrape}
                 sortField={sortField}
